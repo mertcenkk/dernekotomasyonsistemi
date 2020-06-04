@@ -16,16 +16,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class DBConnection {
+public abstract class DBConnection {
+    private Connection connection;
     
     public Connection connect() {
-        Connection c = null;
+      
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/dernek?user=root&password=1234");
+            Class.forName("org.mariadb.jdbc.Driver");
+            this.connection= DriverManager.getConnection("jdbc:mariadb://localhost:3306/dernek", "root", "1234");
+            System.out.println("Başarılı db");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage());
         }
-        return c;
+        return this.connection;
     }
 }

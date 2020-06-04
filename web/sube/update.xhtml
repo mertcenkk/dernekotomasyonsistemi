@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="/css/bootstrap.css"/>
+        <h:outputScript library="js" name="jquery-3.5.1.min.js"/>
+        <h:outputScript library="js" name="bootstrap.js"/>
+    </h:head>
+    <h:body>
+        <div class="container">
+        <h:form>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <h:commandLink action="/index" value="Index"/>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav">
+                        <h:commandLink styleClass="nav-item nav-link" action="/sube/list" value="ŞUBE    "/>
+                        <h:commandLink styleClass="nav-item nav-link" action="/uye/list" value="ÜYE  "/>
+                    </div>
+                </div>
+            </nav>
+        </h:form>
+        <h:form>
+
+            Şube Adı : <h:inputText value="#{subeBean.entity.ad}"/> <br />
+            Şube Adresi : <h:inputText value="#{subeBean.entity.adres}"/> <br />
+            <h:commandButton action="#{subeBean.update()}" value="Update"/>
+        </h:form>  
+    </div>
+    </h:body>
+</html>

@@ -18,17 +18,27 @@ and open the template in the editor.
         <div class="container">
             <h:form>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <h:commandLink action="index" value="Index"/>
+                    <h:commandLink action="/index" value="Index"/>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <div class="navbar-nav">
-                        <h:commandLink styleClass="nav-item nav-link" action="/sube/list" value="ŞUBE    "/>
-                        <h:commandLink styleClass="nav-item nav-link" action="/uye/list" value="ÜYE  "/>
-                    </div>
+                            <h:commandLink styleClass="nav-item nav-link" action="/sube/list" value="ŞUBE    "/>
+                            <h:commandLink styleClass="nav-item nav-link" action="/uye/list" value="ÜYE  "/>
+                        </div>
                     </div>
                 </nav>
+            </h:form>
+            <h:form>
+                <div class="form-group">
+
+                    <label for="example">Uye Name : </label>
+                    <h:inputText styleClass="form-control" value="#{uyeBean.entity.adiSoyadi}"/> <br />
+                </div>
+                <h:commandButton styleClass="btn btn-primary" action="#{uyeBean.create()}" value="Create"/>
+
+
             </h:form>
         </div>
     </h:body>
