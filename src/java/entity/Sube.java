@@ -13,26 +13,28 @@ import java.util.Date;
  */
 public class Sube {
 
-    private int id;
+    private Long id;
     private String ad;
     private Date tarih;
     private String adres;
+    private Dernek dernek;
 
     public Sube() {
     }
 
-    public Sube(int id, String ad, Date tarih, String adres) {
+    public Sube(Long id, String ad, Date tarih, String adres, Dernek dernek) {
         this.id = id;
         this.ad = ad;
         this.tarih = tarih;
         this.adres = adres;
+        this.dernek = dernek;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,5 +61,15 @@ public class Sube {
     public void setAdres(String adres) {
         this.adres = adres;
     }
+
+    public Dernek getDernek() {
+        return dernek;
+    }
+
+    public void setDernek(Dernek dernek) {
+        this.dernek = dernek;
+    }
+
+    
 
 }

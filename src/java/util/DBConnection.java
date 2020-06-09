@@ -9,24 +9,25 @@ package util;
  *
  * @author kmert
  */
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public abstract class DBConnection {
+
     private Connection connection;
-    
-    public Connection connect() {
-      
-        try {
-            Class.forName("org.mariadb.jdbc.Driver");
-            this.connection= DriverManager.getConnection("jdbc:mariadb://localhost:3306/dernek", "root", "1234");
-            System.out.println("Başarılı db");
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println(e.getMessage());
+
+    public Connection connect() throws SQLException {
+        if (this.connection == null || this.connection.isClosed()) {
+
+            try {
+                Class.forName("org.mariadb.jdbc.Driver");
+                this.connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/dernek", "root", "1234");
+                System.out.println("Başarılı db");
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
         }
         return this.connection;
     }

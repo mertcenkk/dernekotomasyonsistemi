@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/admin.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="content">
+
+        <h:form>
+            <h:commandButton styleClass="btn btn-outline-primary"  action="/dernek/create" value="Create new Dernek"/>
+
+
+            <h:dataTable styleClass="table table-hover table-striped mt-3" value="#{dernekBean.read}" var="u">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{u.dernekId}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">AD</f:facet>
+                        #{u.adi}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">KURULUŞ TİPİ</f:facet>
+                        #{u.kurulusTipi}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">ADRESİ</f:facet>
+                        #{u.adresi}
+                </h:column>
+                    <h:column>
+                        <f:facet name="header">TEL NO</f:facet>
+                            #{u.telNo}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">KURULUŞ TARİHİ</f:facet>
+                            #{u.kurulusTarihi}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">UYELER </f:facet>
+                        <ul>
+                        <ui:repeat value="#{u.dernekUyeleri}" var="uye">
+                            <li>#{uye.adi}</li>
+                        </ui:repeat>
+                        </ul>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATION</f:facet>
+                        <div class="btn-group"   role="group" >
+                            <h:commandButton styleClass="btn btn-warning" action="#{dernekBean.updateForm(u)}" value="update"/>
+                            <h:commandButton styleClass="btn btn-danger" action="#{dernekBean.delete(u)}" value="delete"/>
+                        </div>
+                    </h:column>
+
+            </h:dataTable>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

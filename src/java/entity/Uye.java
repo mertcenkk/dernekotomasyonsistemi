@@ -5,23 +5,26 @@
  */
 package entity;
 
+import java.util.List;
+import java.util.Objects;
+
 /**
  *
  * @author kmert
  */
 public class Uye {
 
-    private int uyeId;
-    private int tcNo;
+    private Long uyeId;
+    private Long tcNo;
     private String adiSoyadi;
-    private int telNo;
+    private Long telNo;
     private String meslek;
     private String ogrenimDurumu;
 
     public Uye() {
     }
 
-    public Uye(int uyeId, int tcNo, String adiSoyadi, int telNo, String meslek, String ogrenimDurumu) {
+    public Uye(Long uyeId, Long tcNo, String adiSoyadi, Long telNo, String meslek, String ogrenimDurumu) {
         this.uyeId = uyeId;
         this.tcNo = tcNo;
         this.adiSoyadi = adiSoyadi;
@@ -30,19 +33,19 @@ public class Uye {
         this.ogrenimDurumu = ogrenimDurumu;
     }
 
-    public int getUyeId() {
+    public Long getUyeId() {
         return uyeId;
     }
 
-    public void setUyeId(int uyeId) {
+    public void setUyeId(Long uyeId) {
         this.uyeId = uyeId;
     }
 
-    public int getTcNo() {
+    public Long getTcNo() {
         return tcNo;
     }
 
-    public void setTcNo(int tcNo) {
+    public void setTcNo(Long tcNo) {
         this.tcNo = tcNo;
     }
 
@@ -54,11 +57,11 @@ public class Uye {
         this.adiSoyadi = adiSoyadi;
     }
 
-    public int getTelNo() {
+    public Long getTelNo() {
         return telNo;
     }
 
-    public void setTelNo(int telNo) {
+    public void setTelNo(Long telNo) {
         this.telNo = telNo;
     }
 

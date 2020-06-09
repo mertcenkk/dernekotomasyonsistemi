@@ -12,12 +12,13 @@ and open the template in the editor.
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <ui:define name="content">
-        <h:form>
+        <h:form enctype="multipart/form-data">
             <div class="form-group">
+                <label>File</label> 
+                <h:inputFile  value="#{documentBean.doc}" styleClass="custom-file"/> <br />
 
-                <label>Uye Name :</label> 
-                <h:inputText styleClass="form-control" value="#{uyeBean.entity.adiSoyadi}"/> <br />
-                <h:commandButton styleClass="btn btn-primary" action="#{uyeBean.create()}" value="Create"/>
+                
+                <h:commandButton styleClass="btn btn-primary" action="#{documentBean.upload}" value="Upload"/>
             </div>
         </h:form>
     </ui:define>
