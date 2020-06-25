@@ -14,17 +14,20 @@ import java.util.Objects;
  */
 public class Uye {
 
-    private Long uyeId;
-    private Long tcNo;
+    private int uyeId;
+    private int tcNo;
     private String adiSoyadi;
-    private Long telNo;
+    private int telNo;
     private String meslek;
     private String ogrenimDurumu;
+    
+    private List<Dernek> uyeninDernekleri;
+    
 
     public Uye() {
     }
 
-    public Uye(Long uyeId, Long tcNo, String adiSoyadi, Long telNo, String meslek, String ogrenimDurumu) {
+    public Uye(int uyeId, int tcNo, String adiSoyadi, int telNo, String meslek, String ogrenimDurumu) {
         this.uyeId = uyeId;
         this.tcNo = tcNo;
         this.adiSoyadi = adiSoyadi;
@@ -33,19 +36,19 @@ public class Uye {
         this.ogrenimDurumu = ogrenimDurumu;
     }
 
-    public Long getUyeId() {
+    public int getUyeId() {
         return uyeId;
     }
 
-    public void setUyeId(Long uyeId) {
+    public void setUyeId(int uyeId) {
         this.uyeId = uyeId;
     }
 
-    public Long getTcNo() {
+    public int getTcNo() {
         return tcNo;
     }
 
-    public void setTcNo(Long tcNo) {
+    public void setTcNo(int tcNo) {
         this.tcNo = tcNo;
     }
 
@@ -57,11 +60,11 @@ public class Uye {
         this.adiSoyadi = adiSoyadi;
     }
 
-    public Long getTelNo() {
+    public int getTelNo() {
         return telNo;
     }
 
-    public void setTelNo(Long telNo) {
+    public void setTelNo(int telNo) {
         this.telNo = telNo;
     }
 
@@ -80,5 +83,15 @@ public class Uye {
     public void setOgrenimDurumu(String ogrenimDurumu) {
         this.ogrenimDurumu = ogrenimDurumu;
     }
+
+    public List<Dernek> getUyeninDernekleri() {
+        return uyeninDernekleri;
+    }
+
+    public void setUyeninDernekleri(List<Dernek> uyeninDernekleri) {
+        this.uyeninDernekleri = uyeninDernekleri;
+    }
+    
+    
 
 }

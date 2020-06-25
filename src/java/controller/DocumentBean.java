@@ -23,85 +23,39 @@ import javax.servlet.http.Part;
 @Named
 @SessionScoped
 public class DocumentBean implements Serializable {
+
     private Document entity;
-    private List<Document> entityList;
+    private List<Document> documentList;
     private DocumentDAO dao;
-    private int page=1;
-    private int pageSize=10;
-    private int pageCount;
-    
-    public void next(){
-        if(this.page== this.getPageCount())
-            this.page=1;
-        else
-            this.page++;
-    }
-    
-    public void previous(){
-        if(this.page==1)
-            this.page=this.getPageCount();
-        else
-            this.page--;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getPageCount() {
-        this.pageCount = (int) Math.ceil(this.getDao().count()/(double)pageSize);
-        return pageCount;
-    }
-
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
-    }
-    
     private Part doc;
-    private String uploadTo="C:\\Users\\kmert\\Documents\\NetBeansProjects\\Dernek Otomasyonu\\web\\resources\\upload\\";
-    public String upload(){
-        try{
+
+    private final String uploadPath = "C:\\Users\\kmert\\Desktop\\Dernek Otomasyonu\\web\\upload/";
+
+    public Document getById(int id) {
+        return this.getDao().getById(id);
+    }
+
+    public String upload() {
+        try {
             InputStream input = doc.getInputStream();
-            File f = new File(uploadTo+doc.getSubmittedFileName());
+            File f = new File(uploadPath + doc.getSubmittedFileName());
             Files.copy(input, f.toPath());
-            
-            entity=this.getEntity();
-            entity.setFilePath(f.getParent());
-            entity.setFileName(f.getName());
-            entity.setFileType(doc.getContentType());
-            
-            this.getDao().create(entity);
-            
-        }catch (Exception e){
+            this.entity = this.getEntity();
+            this.entity.setFilePath(f.getParent());
+            this.entity.setFileName(f.getName());
+            this.entity.setFileType(doc.getContentType());
+
+            this.getDao().create(this.entity);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
-        return "/document/list";
-        
-        
+        return "/admin/document/list";
     }
-
-    public String getUploadTo() {
-        return uploadTo;
-    }
-    
-    
 
     public Document getEntity() {
-        if(this.entity==null)
-            this.entity= new Document();
+        if (this.entity == null) {
+            this.entity = new Document();
+        }
         return entity;
     }
 
@@ -110,14 +64,17 @@ public class DocumentBean implements Serializable {
     }
 
     public List<Document> getRead() {
-        this.entityList = this.getDao().read(page,pageSize);
-        return entityList;
+        return this.getDao().read();
     }
 
+    public void setRead(List<Document> documentList) {
+        this.documentList = documentList;
+    }
 
     public DocumentDAO getDao() {
-        if(this.dao==null)
-            this.dao=new DocumentDAO();
+        if (this.dao == null) {
+            this.dao = new DocumentDAO();
+        }
         return dao;
     }
 
@@ -133,6 +90,7 @@ public class DocumentBean implements Serializable {
         this.doc = doc;
     }
 
-
-    
+    public String getUploadTo() {
+        return uploadPath;
+    }
 }

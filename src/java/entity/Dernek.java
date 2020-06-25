@@ -14,19 +14,19 @@ import java.util.Objects;
  * @author kmert
  */
 public class Dernek {
-    private Long dernekId;
+    private int dernekId;
     private String adi;
     private String kurulusTipi;
     private String adresi;
     private String amaci;
-    private Long telNo;
+    private int telNo;
     private Date kurulusTarihi;
     private Uye uye;
 
     public Dernek() {
     }
 
-    public Dernek(Long dernekId, String adi, String kurulusTipi, String adresi, String amaci, Long telNo, Date kurulusTarihi,Uye uye) {
+    public Dernek(int dernekId, String adi, String kurulusTipi, String adresi, String amaci, int telNo, Date kurulusTarihi,Uye uye) {
         this.dernekId = dernekId;
         this.adi = adi;
         this.kurulusTipi = kurulusTipi;
@@ -37,11 +37,11 @@ public class Dernek {
         this.uye = uye;
     }
 
-    public Long getDernekId() {
+    public int getDernekId() {
         return dernekId;
     }
 
-    public void setDernekId(Long dernekId) {
+    public void setDernekId(int dernekId) {
         this.dernekId = dernekId;
     }
 
@@ -77,11 +77,11 @@ public class Dernek {
         this.amaci = amaci;
     }
 
-    public Long getTelNo() {
+    public int getTelNo() {
         return telNo;
     }
 
-    public void setTelNo(Long telNo) {
+    public void setTelNo(int telNo) {
         this.telNo = telNo;
     }
 

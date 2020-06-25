@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/admin/template/admin.xhtml">
+    <ui:define name="content">
+        <div class="row">
+            <h:form>
+                <div class="col-md-12">
+                    
+                </div>
+            </h:form>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group">
+                    <h:form id="privilege-pagination">
+                        <h:commandButton action="#{privilegeBean.previous()}" value="Önceki" styleClass="btn btn-outline-dark">
+                            <f:ajax execute="@this" render="privilege-table privilege-pagination"/>
+                        </h:commandButton>
+                        <ui:repeat value="#{privilegeBean.pageList}" var="paginator" varStatus="page">
+                            <h:commandButton action="#{privilegeBean.setPage(paginator.intValue())}" value="#{page.index + 1}" styleClass="btn btn-outline-dark px-1" >
+                                <f:ajax execute="@this" render="privilege-table privilege-pagination"/>
+                            </h:commandButton>
+                        </ui:repeat>
+                        <h:commandButton action="#{privilegeBean.next()}" value="Sonraki" styleClass="btn btn-outline-dark">
+                            <f:ajax execute="@this" render="privilege-table privilege-pagination"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-outline-primary" action="create" value="Yeni Yetki Ekle" />
+                    <hr />
+                    </h:form>
+                </div>
+                <h:form id="privilege-table">
+                    <h:dataTable  styleClass="table table-striped" value="#{privilegeBean.privilegeList}" var="privilege">
+                        <h:column>
+                            <f:facet name="header">Id</f:facet>
+                                #{privilege.id}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Type</f:facet>
+                                #{privilege.type}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Type Name</f:facet>
+                                #{privilege.typeName}
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Admin</f:facet>
+                            <div class="btn-group" role="group">
+                                <h:commandButton styleClass="btn btn-sm btn-warning" action="#{privilegeBean.updateForm(privilege)}" value="Update" />
+                                <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{privilegeBean.deleteConfirmation(privilege)}" value="Delete" >
+                                    <f:ajax execute="@this" render="delete-modal"/>
+                                </h:commandButton>
+                            </div>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </div>
+
+        <div class="modal" tabindex="-1" role="dialog" >
+            <div class="modal-dialog" role="document">
+                <h:panelGroup layout="block" class="modal-content" id="delete-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Silmek İstediğinize Emin Misiniz?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>#{privilegeBean.entity.typeName}</b> yetkisini silmek istediğinize emin misiniz?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <h:form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Geri Dön</button>
+                            <h:commandButton onclick="$('.modal').modal('hide')" action="#{privilegeBean.delete()}" value="Sil" styleClass="btn btn-danger">
+                                <f:ajax execute="@this" render="privilege-table" />
+                            </h:commandButton>
+                        </h:form>
+                    </div>
+                </h:panelGroup>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

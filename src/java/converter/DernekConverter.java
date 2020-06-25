@@ -31,7 +31,7 @@ public class DernekConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uıc, String string) {
-        return this.getDerDao().getById(Long.valueOf(string));
+        return this.getDerDao().getById(Integer.valueOf(string));
     }
 
     @Override

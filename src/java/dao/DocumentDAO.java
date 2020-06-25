@@ -16,55 +16,61 @@ import util.DBConnection;
  *
  * @author kmert
  */
-public class  DocumentDAO extends DBConnection {
-    public List<Document> read(int page, int pageSize){
-        List<Document> dList=new ArrayList<>();
-        //pagination limit
-        int start = (page-1)*pageSize;
+public class DocumentDAO extends DBConnection{
+    public List<Document> read(){
+        List<Document> dList = new ArrayList<>();
         try {
-            PreparedStatement pst = this.connect().prepareStatement("select * from document order by id");
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                Document tmp = new Document();
-                tmp.setId(rs.getLong("id"));
-                tmp.setFilePath(rs.getString("path"));
-                tmp.setFileName(rs.getString("name"));
-                tmp.setFileType(rs.getString("type"));
-                dList.add(tmp);
+            String query = "select * from document";
+            PreparedStatement st = this.connect().prepareStatement(query);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Document d = new Document();
+                
+                d.setId(rs.getInt("id"));
+                d.setFilePath(rs.getString("path"));
+                d.setFileName(rs.getString("name"));
+                d.setFileType(rs.getString("type"));
+                
+                dList.add(d);
             }
-            pst.close();;
-            rs.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return dList;
     }
+    
     public void create(Document d){
-        String query="insert into document(path,name,type) values (?,?,?)";
         try {
-            PreparedStatement pst = this.connect().prepareStatement(query);
-            pst.setString(1, d.getFilePath());
-            pst.setString(2, d.getFileName());
-            pst.setString(3, d.getFileType());
-            pst.executeUpdate();
-            pst.close();
+            String query = "insert into document(path, name, type) values(?, ?, ?)";
+            PreparedStatement st = this.connect().prepareStatement(query);
+            st.setString(1, d.getFilePath());
+            st.setString(2, d.getFileName());
+            st.setString(3, d.getFileType());
+            st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    public Document getById(int id){
+        Document d = null;
+        try {
+            String query = "select * from document where id = ?";
+            PreparedStatement st = this.connect().prepareStatement(query);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            
+            d = new Document();
+            d.setId(rs.getInt("id"));
+            d.setFileName(rs.getString("name"));
+            d.setFilePath(rs.getString("path"));
+            d.setFileType(rs.getString("type"));
+            return d;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }   
+        return d;
     }
 
-    public double count() {
-            int count=0;
-            try {
-            PreparedStatement pst = this.connect().prepareStatement("select count(id) as documentCount from document");
-            ResultSet rs = pst.executeQuery();
-            rs.next();
-            count=rs.getInt("documentCount");
-            pst.close();
-            rs.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return count;
-    }
 }

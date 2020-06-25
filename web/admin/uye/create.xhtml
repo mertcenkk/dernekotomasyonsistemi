@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/admin/template/admin.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="content">
+        <h:form>
+            <div class="form-group">
+
+                <label>Uye Name :</label> 
+                <h:inputText styleClass="form-control" value="#{uyeBean.entity.adiSoyadi}"/> <br />
+                <label>TC No :</label> 
+                <h:inputText styleClass="form-control" value="#{uyeBean.entity.tcNo}"/> <br />
+                <label>Tel No :</label> 
+                <h:inputText styleClass="form-control" value="#{uyeBean.entity.telNo}"/> <br />
+                <label>Meslek :</label> 
+                <h:inputText styleClass="form-control" value="#{uyeBean.entity.meslek}"/> <br />
+                <label>Öğrenim Durumu :</label> 
+                <h:inputText styleClass="form-control" value="#{uyeBean.entity.ogrenimDurumu}"/> <br />
+                <div class="form-group">
+                    <label for="uyeDernekleri">Üyenin Kaydedileceği Dernek</label> 
+                    <h:selectManyMenu value="#{uyeBean.entity.uyeninDernekleri}" styleClass="custom-select" converter="derConverter">
+                    <f:selectItems value="#{uyeBean.dernekBean.read}" var="dernek" itemValue="#{dernek}" itemLabel="#{dernek.adi}" />
+                </h:selectManyMenu> <br />
+                </div>
+                <h:commandButton styleClass="btn btn-primary" action="#{uyeBean.create()}" value="Create"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

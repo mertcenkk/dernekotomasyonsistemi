@@ -21,40 +21,37 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kmert
  */
-@WebFilter("/*")
+@WebFilter(urlPatterns = "/*")
 public class LoginFiler implements Filter{
-
-
-
-    @Override
+@Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-            HttpServletRequest req = (HttpServletRequest) request;                    req.getSession().invalidate();
-
-            HttpServletResponse res = (HttpServletResponse) response;
+        
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        
+        String url = req.getRequestURI();
+        User u = (User) req.getSession().getAttribute("valid_user");
+        
+        if(u == null){
             
-            String url = req.getRequestURI();
-            
-            User u = (User) req.getSession().getAttribute("valid_user");
-            
-            if(u==null){
-                if(url.contains("secret")||url.contains("logout")){
-                    res.sendRedirect(req.getContextPath()+"/login.xhtml");
-                }
-                    
-                else{
-                        chain.doFilter(request, response);
-                        } 
-            }else {
-                if (url.contains("register")|| url.contains("login")){
-                    res.sendRedirect(req.getContextPath()+"/secret/secret.xhtml");
-                }else if(url.contains("logout")){
-                    res.sendRedirect(req.getContextPath()+"/secret/secret.xhtml");
-                }else {
-                    chain.doFilter(request, response);
-                }
+            if(url.contains("admin") || url.contains("logout") ) {
+                res.sendRedirect(req.getContextPath()+"/login.xhtml");
+            }else{
+                chain.doFilter(request, response);
             }
-                
-    
+            
+        }else{
+            if(url.contains("register") || url.contains("login")){
+                if(u.getPrivilegeId() == 0){
+                    res.sendRedirect(req.getContextPath()+"/admin/index.xhtml");
+                }
+            }else if( url.contains("logout")){
+                req.getSession().invalidate();
+                res.sendRedirect(req.getContextPath()+"/index.xhtml");
+            }else{
+                chain.doFilter(request, response);
+            }
+        }
     }
 
     @Override
@@ -66,8 +63,4 @@ public class LoginFiler implements Filter{
     public void destroy() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
-    
-    
 }

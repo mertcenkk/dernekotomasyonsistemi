@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/admin/template/admin.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="content">
+
+        <h:form id="sube-table">
+            <pre>Page #{subeBean.page} of #{subeBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{subeBean.previous()}" value="Geri" styleClass="btn btn-outline-dark"/>
+                <h:commandButton action="#{subeBean.next()}" value="İleri" styleClass="btn btn-outline-dark"/>
+            </div>
+            <h:commandButton styleClass="btn btn-outline-primary"  action="/admin/sube/create" value="Create new Sube"/>
+
+            <h:dataTable styleClass="table table-hover table-striped mt-3" value="#{subeBean.read}" var="u">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{u.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">AD</f:facet>
+                        #{u.ad}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">TARIH</f:facet>
+                        #{u.tarih}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">ADRES</f:facet>
+                        #{u.adres}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">DERNEK </f:facet>
+                        #{dernekBean.getById(u.dernek.dernekId).adi}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">ADMINISTRATION</f:facet>
+                    <div class="btn-group"   role="group" >
+                        <h:commandButton styleClass="btn btn-warning" action="#{subeBean.updateForm(u)}" value="update"/>
+                        <h:commandButton onclick="$('.modal').modal('show')" styleClass="btn btn-sm btn-danger" action="#{subeBean.deleteConfirmation(u)}" value="Delete" >
+                            <f:ajax execute="@this" render="delete-modal"/>
+                        </h:commandButton>
+                    </div>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+        <div class="modal" tabindex="-1" role="dialog" >
+            <div class="modal-dialog" role="document">
+                <h:panelGroup layout="block" class="modal-content" id="delete-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Silmek İstediğinize Emin Misiniz?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>#{subeBean.entity.ad}</b>  silmek istediğinize emin misiniz?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <h:form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Geri Dön</button>
+                            <h:commandButton onclick="$('.modal').modal('hide')" action="#{subeBean.delete()}" value="Sil" styleClass="btn btn-danger">
+                                <f:ajax execute="@this" render="sube-table" />
+                            </h:commandButton>
+                        </h:form>
+                    </div>
+                </h:panelGroup>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>
+

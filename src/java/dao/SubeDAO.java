@@ -38,7 +38,7 @@ public class SubeDAO extends DBConnection {
             PreparedStatement pst = this.connect().prepareStatement("insert into sube(ad,adres,dernekId) values(?,?,?)");
             pst.setString(1, u.getAd());
             pst.setString(2, u.getAdres());
-            pst.setLong(3, u.getDernek().getDernekId());
+            pst.setInt(3, u.getDernek().getDernekId());
             pst.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -52,9 +52,9 @@ public class SubeDAO extends DBConnection {
             PreparedStatement pst = this.connect().prepareStatement("select * from sube order by id asc limit "+start+","+pageSize);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                Dernek d = this.getdDao().getById(rs.getLong("dernekId"));
+                Dernek d = this.getdDao().getById(rs.getInt("dernekId"));
                 Sube tmp = new Sube();
-                tmp.setId(rs.getLong("id")); 
+                tmp.setId(rs.getInt("id")); 
                 tmp.setAd(rs.getString("ad"));
                 tmp.setTarih(rs.getDate("tarih")); 
                 tmp.setAdres(rs.getString("adres"));
@@ -74,19 +74,19 @@ public class SubeDAO extends DBConnection {
             PreparedStatement pst = this.connect().prepareStatement("update sube set ad=?,adres=?,dernekId=? where id=?");
             pst.setString(1, u.getAd());
             pst.setString(2, u.getAdres());
-            pst.setLong(3, u.getDernek().getDernekId());
-            pst.setLong(4, u.getId());
+            pst.setInt(3, u.getDernek().getDernekId());
+            pst.setInt(4, u.getId());
             pst.executeUpdate();
-            pst.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+       
     }
 
     public void delete(Sube u) {
         try {
             PreparedStatement pst = this.connect().prepareStatement("delete from sube where id=?");
-            pst.setLong(1, u.getId());
+            pst.setInt(1, u.getId());
             pst.executeUpdate();
             pst.close();
         } catch (Exception e) {

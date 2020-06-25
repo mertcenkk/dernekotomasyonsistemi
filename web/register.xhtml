@@ -1,23 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </h:head>
-    <h:body>
-        <div>   
-            <h:form>
-                <h:commandButton class="btn btn-outline-primary" action="/index.xhtml" value="index"/>
-                <h:commandButton class="btn btn-outline-secondary" action="/login" value="login"/>
-            </h:form>  
-        </div>
-    </h:body>
-</html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template/user.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:define name="content">
+        <h:form>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <section class="card">
+                        <header class="card-header">
+                            <h2 class="card-title">Kayıt Ol</h2>
+                        </header>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label class="col-lg-4 control-label text-lg-right pt-2" for="inputDefault">Kullanıcı Adı: </label>
+                                <div class="col-lg-8">
+                                    <h:inputHidden value="#{userBean.entity.id}" />
+                                    <h:inputText id="kullanici_adi" value="#{userBean.entity.username}" /><br />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 control-label text-lg-right pt-2" for="inputDefault">Şifre: </label>
+                                <div class="col-lg-8">
+                                    <h:inputSecret id="sifre" value="#{userBean.entity.password}" /><br />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 control-label text-lg-right pt-2" for="inputDefault">Ad: </label>
+                                <div class="col-lg-8">
+                                    <h:inputText id="ad" value="#{userBean.entity.name}" /><br />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 control-label text-lg-right pt-2" for="inputDefault">Soyad: </label>
+                                <div class="col-lg-8">
+                                    <h:inputText id="soyad" value="#{userBean.entity.surname}" /><br />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 control-label text-lg-right pt-2" for="inputDefault">Eposta: </label>
+                                <div class="col-lg-8">
+                                    <h:inputText id="e-posta" value="#{userBean.entity.email}" /><br />
+                                </div>
+                            </div>
+                            <div class="float-left">
+                                <div class="mt-1">
+                                    <h:commandButton styleClass="btn btn-light btn-outline-dark" action="#{userBean.create}" value="Kayıt Ol" />
+                                </div>
+                            </div>
+                            <div class="float-right">
+                                <div class="mt-1">
+                                    <b>Hesabın var mı?</b> <a href="login.xhtml" class="text-success" >Giriş Yap</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -8,6 +8,7 @@ package controller;
 import dao.SubeDAO;
 import entity.Sube;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -22,8 +23,19 @@ public class SubeBean implements Serializable{
     private SubeDAO dao;
     private Sube entity;
     private int page=1;
-    private int pageSize=10;
+    private int pageSize=5;
     private int pageCount;
+    
+    public List<Integer> getPageList() {
+        List<Integer> list;
+        list = new ArrayList<Integer>();
+
+        for (int i = 1; i < this.getPageCount() + 1; i++) {
+            list.add((Integer) i);
+        }
+
+        return list;
+    }
     
     public void next(){
         if(this.page== this.getPageCount())
@@ -40,7 +52,7 @@ public class SubeBean implements Serializable{
     }
 
     public int getPage() {
-        return page;
+        return this.page;
     }
 
     public void setPage(int page) {
@@ -68,8 +80,11 @@ public class SubeBean implements Serializable{
     public String create() {
         this.getDao().create(entity);
         this.entity = new Sube();
-        return "/sube/list";
+        return "/admin/sube/list";
     }
+    public List<Sube> getReadIndex() {
+        return this.getDao().read(this.page, 3);
+    }  
 
     public List<Sube> getRead() {
         return this.getDao().read(page,pageSize);
@@ -77,17 +92,21 @@ public class SubeBean implements Serializable{
 
     public String updateForm(Sube u) {
         this.entity = u;
-        return "/sube/update";
+        return "/admin/sube/update";
     }
 
     public String update() {
         this.getDao().update(entity);
         this.entity = new Sube();
-        return "/sube/list";
+        return "/admin/sube/list";
+    }
+    public void deleteConfirmation(Sube d) {
+        this.entity = d;
     }
 
-    public void delete(Sube u) {
-        this.getDao().delete(u);
+    public void delete() {
+        this.getDao().delete(this.entity);
+        this.entity = null;
     }
 
     public SubeBean() {

@@ -5,6 +5,7 @@
  */
 package dao;
 
+import entity.Dernek;
 import java.sql.ResultSet;
 import util.DBConnection;
 import entity.Uye;
@@ -20,7 +21,7 @@ public class UyeDAO extends DBConnection {
 
     //CRUD
     private DernekDAO dDao;
-    public Uye getById(Long id) {
+    public Uye getById(int id) {
         Uye d = null;
         try {
             PreparedStatement st = this.connect().prepareStatement("select * from uye where uyeId=?");
@@ -28,10 +29,10 @@ public class UyeDAO extends DBConnection {
             rs.next();
 
             d = new Uye();
-            d.setUyeId(rs.getLong("uyeId"));
-            d.setTcNo(rs.getLong("tcNo")); 
+            d.setUyeId(rs.getInt("uyeId"));
+            d.setTcNo(rs.getInt("tcNo")); 
             d.setAdiSoyadi(rs.getString("adiSoyadi"));
-            d.setTelNo(rs.getLong("telNo"));
+            d.setTelNo(rs.getInt("telNo"));
             d.setMeslek(rs.getString("meslek"));
             d.setOgrenimDurumu(rs.getString("ogrenimDurumu"));
             st.close();
@@ -43,9 +44,27 @@ public class UyeDAO extends DBConnection {
     }
     public void create(Uye u) {
         try {
-            PreparedStatement pst = this.connect().prepareStatement("insert into uye(adiSoyadi) values=?");
-            pst.setString(1, u.getAdiSoyadi());
-            pst.executeUpdate();
+            PreparedStatement pst = this.connect().prepareStatement("insert into uye(tcNo,adiSoyadi,telNo,meslek,ogrenimDurumu) values(?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
+            pst.setInt(1, u.getTcNo());
+            pst.setString(2, u.getAdiSoyadi());
+            pst.setInt(3, u.getTelNo());
+            pst.setString(4, u.getMeslek());
+            pst.setString(5, u.getOgrenimDurumu());
+            
+            pst.executeUpdate(); 
+            int uyeId=0;
+            ResultSet gk = pst.getGeneratedKeys();
+            
+            if( gk.next()){
+                uyeId = gk.getInt(1);
+            }
+            for(Dernek l : u.getUyeninDernekleri()){
+                PreparedStatement pst2 = this.connect().prepareStatement("insert into kayit (dernekId,uyeId) values (?,?)");
+                pst2.setInt(1, uyeId);
+                pst2.setInt(2, l.getDernekId());
+                pst2.executeUpdate();
+                
+            }
             pst.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,12 +80,13 @@ public class UyeDAO extends DBConnection {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Uye tmp = new Uye();
-                tmp.setUyeId(rs.getLong("uyeId"));
-                tmp.setTcNo(rs.getLong("tcNo"));
+                tmp.setUyeId(rs.getInt("uyeId"));
+                tmp.setTcNo(rs.getInt("tcNo"));
                 tmp.setAdiSoyadi(rs.getString("adiSoyadi"));
-                tmp.setTelNo(rs.getLong("telNo"));
+                tmp.setTelNo(rs.getInt("telNo"));
                 tmp.setMeslek(rs.getString("meslek"));
                 tmp.setOgrenimDurumu(rs.getString("ogrenimDurumu"));
+                tmp.setUyeninDernekleri(this.getdDao().getUyeninDernekleri(tmp.getUyeId()));
                 list.add(tmp);
                 
             }
@@ -80,10 +100,25 @@ public class UyeDAO extends DBConnection {
 
     public void update(Uye u) {
         try {
-            PreparedStatement pst = this.connect().prepareStatement("update uye set adiSoyadi=? where uyeId=?");
-            pst.setString(1, u.getAdiSoyadi());
-            pst.setLong(2, u.getUyeId());
+            PreparedStatement pst = this.connect().prepareStatement("update uye set tcNo=?, adiSoyadi=?, telNo=?, meslek=?, ogrenimDurumu=? where uyeId=?",PreparedStatement.RETURN_GENERATED_KEYS);
+            pst.setInt(1,u.getTcNo());
+            pst.setString(2, u.getAdiSoyadi());
+            pst.setInt(3, u.getTelNo());
+            pst.setString(4, u.getMeslek());
+            pst.setString(5, u.getOgrenimDurumu());
+            pst.setInt(6, u.getUyeId());
             pst.executeUpdate();
+            int uyeId=0;
+            pst = this.connect().prepareStatement("delete from kayit uyeId=?");
+            pst.setLong(1, u.getUyeId());
+            pst.executeUpdate();
+            for(Dernek l : u.getUyeninDernekleri()){
+                PreparedStatement pst2 = this.connect().prepareStatement("insert into kayit (dernekId,uyeId) values (?,?)");
+                pst2.setInt(1, uyeId);
+                pst2.setInt(2, l.getDernekId());
+                pst2.executeUpdate();
+                
+            }
             pst.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -93,7 +128,7 @@ public class UyeDAO extends DBConnection {
     public void delete(Uye u) {
         try {
             PreparedStatement pst = this.connect().prepareStatement("delete from uye where uyeId=?");
-            pst.setLong(1, u.getUyeId());
+            pst.setInt(1, u.getUyeId());
             pst.executeUpdate();
             pst.close();
         } catch (Exception e) {

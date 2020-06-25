@@ -31,7 +31,7 @@ public class UyeConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uıc, String string) {
-        return this.getUyeDao().getById(Long.valueOf(string));
+        return this.getUyeDao().getById(Integer.valueOf(string));
     }
 
     @Override

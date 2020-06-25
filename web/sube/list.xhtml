@@ -3,7 +3,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/template/admin.xhtml"
+                template="/template/user.xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <ui:define name="content">
@@ -14,7 +14,6 @@
                 <h:commandButton action="#{subeBean.previous()}" value="Geri" styleClass="btn btn-outline-dark"/>
                 <h:commandButton action="#{subeBean.next()}" value="İleri" styleClass="btn btn-outline-dark"/>
             </div>
-            <h:commandButton styleClass="btn btn-outline-primary"  action="/sube/create" value="Create new Sube"/>
 
             <h:dataTable styleClass="table table-hover table-striped mt-3" value="#{subeBean.read}" var="u">
                 <h:column>
@@ -33,21 +32,16 @@
                     <f:facet name="header">ADRES</f:facet>
                         #{u.adres}
                 </h:column>
-                
+
                 <h:column>
                     <f:facet name="header">DERNEK </f:facet>
                         #{dernekBean.getById(u.dernek.dernekId).adi}
                 </h:column>
-                <h:column>
-                    <f:facet name="header">ADMINISTRATION</f:facet>
-                    <div class="btn-group"   role="group" >
-                    <h:commandButton styleClass="btn btn-warning" action="#{subeBean.updateForm(u)}" value="update"/>
-                    <h:commandButton styleClass="btn btn-danger" action="#{subeBean.delete(u)}" value="delete"/>
-                    </div>
-                </h:column>
+                
 
             </h:dataTable>
         </h:form>
+        
 
     </ui:define>
 </ui:composition>

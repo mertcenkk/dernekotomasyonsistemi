@@ -22,26 +22,40 @@ public class DernekDAO extends DBConnection {
 
     //CRUD
     private UyeDAO uDao;
-    public Dernek getById(Long id) {
+    public Dernek getById(int id) {
         Dernek d = null;
         try {
-            PreparedStatement pst = this.connect().prepareStatement("select * from dernek where dernekId=?");
+            PreparedStatement pst = this.connect().prepareStatement("select * from dernek where dernekId=?"+id);
             ResultSet rs = pst.executeQuery();
             rs.next();
 
             d = new Dernek();
-            d.setDernekId(rs.getLong("dernekId"));
+            d.setDernekId(rs.getInt("dernekId"));
             d.setAdi(rs.getString("adi")); 
             d.setKurulusTipi(rs.getString("kurulusTipi"));
             d.setAdresi(rs.getString("adresi"));
             d.setAmaci(rs.getString("amaci"));
-            d.setTelNo(rs.getLong("telNo"));
+            d.setTelNo(rs.getInt("telNo"));
             d.setKurulusTarihi(rs.getDate("kurulusTarihi"));
             
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return d;
+    }
+    public int count() {
+            int count=0;
+            try {
+            PreparedStatement pst = this.connect().prepareStatement("select count(dernekId) as dernekCount from dernek");
+            ResultSet rs = pst.executeQuery();
+            rs.next();
+            count=rs.getInt("dernekCount");
+            pst.close();
+            rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return count;
     }
 
     public void create(Dernek u) {
@@ -51,7 +65,7 @@ public class DernekDAO extends DBConnection {
             pst.setString(2, u.getKurulusTipi());
             pst.setString(3, u.getAdresi());
             pst.setString(4, u.getAdresi());
-            pst.setLong(5, u.getTelNo());
+            pst.setInt(5, u.getTelNo());
             pst.executeUpdate();
             
         } catch (Exception e) {
@@ -59,19 +73,22 @@ public class DernekDAO extends DBConnection {
         }
     }
 
-    public List<Dernek> read() {
+    public List<Dernek> read(int page, int pageSize) {
         List<Dernek> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
         try {
-            PreparedStatement pst = this.connect().prepareStatement("select * from dernek order by dernekId");
+            String query = "select * from dernek order by dernekId desc limit "+start+","+pageSize;
+            PreparedStatement pst = this.connect().prepareStatement(query);
             ResultSet rs = pst.executeQuery();
+
             while (rs.next()) {
                 Dernek tmp = new Dernek();
-                tmp.setDernekId(rs.getLong("dernekId"));
+                tmp.setDernekId(rs.getInt("dernekId"));
                 tmp.setAdi(rs.getString("adi"));
                 tmp.setKurulusTipi(rs.getString("kurulusTipi"));
                 tmp.setAdresi(rs.getString("adresi"));
                 tmp.setAmaci(rs.getString("amaci"));
-                tmp.setTelNo(rs.getLong("telNo"));
+                tmp.setTelNo(rs.getInt("telNo"));
                 tmp.setKurulusTarihi(rs.getDate("kurulusTarihi"));
                 list.add(tmp);
             }
@@ -93,8 +110,9 @@ public class DernekDAO extends DBConnection {
     }
 
     public void delete(Dernek u) {
+        Dernek d = (Dernek) u;
         try {
-            PreparedStatement st = this.connect().prepareStatement("delete from dernek where dernekId=" + u.getDernekId());
+            PreparedStatement st = this.connect().prepareStatement("delete from dernek where dernekId=" + d.getDernekId());
             st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -108,19 +126,20 @@ public class DernekDAO extends DBConnection {
         return uDao;
     }
 
-    public List<Dernek> getUyeDernekleri(Long uyeId) {
-        List<Dernek> uyeDernekleri = new ArrayList<>();
+    public List<Dernek> getUyeninDernekleri(int uyeId) {
+        List<Dernek> uyeninDernekleri = new ArrayList<>();
         try{
-            PreparedStatement pst = this.connect().prepareStatement("select * from kayit where uyeId="+uyeId);
+            PreparedStatement pst = this.connect().prepareStatement("select * from kayit where uyeId=?");
+            pst.setInt(1, uyeId);
             ResultSet rs = pst.executeQuery();
             while (rs.next()){
-                uyeDernekleri.add(this.getById(rs.getLong("uyeId")));
+                uyeninDernekleri.add(this.getById(rs.getInt("uyeId")));
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
         
-        return uyeDernekleri;
+        return uyeninDernekleri;
     }
 
 
